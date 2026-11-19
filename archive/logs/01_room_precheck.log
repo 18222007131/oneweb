@@ -1,0 +1,26 @@
+[节选] 柚子预约：库房硬预选 + 前置reviewer核验
+[master] 当前账号：ext1（库外账号）
+[master] 收到用户输入：入库预约
+[master] 派发入库任务给scheduler，当前链路 master -> scheduler -> reviewer
+[scheduler] 【来源：scheduler】收到预约任务，请求master代为向小柯查询全部库房库存和状态
+[master] 【来源：scheduler】收到预约筛选请求，master代向小柯查询全部库房库存、占用和机组状态
+[master] 【来源：小柯】已取得 6 间库房状态，转交scheduler按果品筛选
+[scheduler] 预选比对 A1（A区1号冷库）：品类杨梅，温区0.5~2°C，湿度90%，可用库容400t，机组1号机组，占用available -> 淘汰（品类不匹配；温区不匹配（库房0.5~2°C，果品5~10°C））
+[scheduler] 预选比对 A2（A区2号冷库）：品类杨梅，温区0.5~2°C，湿度90%，可用库容400t，机组1号机组，占用available -> 淘汰（品类不匹配；温区不匹配（库房0.5~2°C，果品5~10°C））
+[scheduler] 预选比对 B1（B区1号冷库）：品类柚子，温区5~10°C，湿度85%，可用库容300t，机组2号机组，占用available -> 通过
+[scheduler] 预选比对 B2（B区2号冷库）：品类柚子，温区5~10°C，湿度85%，可用库容300t，机组2号机组，占用occupied -> 淘汰（库房已占用/不可预约）
+[scheduler] 预选比对 C1（C区1号冷库）：品类苹果，温区-1~0°C，湿度90%，可用库容300t，机组3号机组，占用available -> 淘汰（品类不匹配；温区不匹配（库房-1~0°C，果品5~10°C））
+[scheduler] 预选比对 C2（C区2号冷库）：品类苹果，温区-1~0°C，湿度90%，可用库容300t，机组3号机组，占用available -> 淘汰（品类不匹配；温区不匹配（库房-1~0°C，果品5~10°C））
+[scheduler] 预选完成：果品柚子，吨位10t；库存6间，温湿度/库容等预校验后候选1间：B1(B区1号冷库) 温区5~10°C 湿度85% 可用库容300t；送前置reviewer快速核验（第1次）
+[reviewer] 前置快速核验通过：候选1间（B1 温区5~10°C 湿度85% 可用库容300t），送master展示给用户选择
+[master] 前置reviewer核验已通过，向用户展示 1 间可预约库房：B1
+[用户] 从候选库房选择 B1
+[master] 用户从候选库房中选择 B1（B区1号冷库），转交scheduler提交预约审核
+[scheduler] 组装单据类型：appointment
+[scheduler] 组装单据 YY-20261119-001 完成，发送reviewer审核（第1次）
+[reviewer] 收到scheduler送审单据：YY-20261119-001
+[reviewer] 单据果品：柚子；单据温湿度要求：5~10°C/85%；内置要求：5~10°C/85%
+[reviewer] 审核通过，结果返回scheduler
+[scheduler] 预约通过审核，库房 B1（B区1号冷库）标记为占用
+[scheduler] 审核通过：仅将入库单据写入台账，不进入小柯COP核算报告链路
+[master] 向用户输出入库流程结果

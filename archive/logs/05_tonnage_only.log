@@ -1,0 +1,18 @@
+[节选] 到货偏差仅吨位触发；温度仅留痕；q_resp+PLC写入历史
+[场景A] 预估COP已把q_resp条件温度写回预约单
+[xiaoke] 预约预估完成：【单库房COP】，Q1=315W，W=3294.5W，【预约预估值】COP=0.0956，正在提交质检员审核
+[断言] 预约单 qRespConditionTempC=1.25℃，thermalPlcHistory 含 estimate_cop + plcSnapshot。
+
+[场景B] 到货10t、货温6℃（温度差异大，但吨位一致）
+[xiaoke] 到货参数记录：原始预约吨位10t、库房A1；q_resp条件温度1.25℃（...Q1按1.25℃...）；实际到货吨位10t、到货货温6℃；吨位偏差0%，阈值5%；温度仅记录不参与偏差判定
+[xiaoke] q_resp条件温度与PLC参数已写入热物性历史：采样时间2026-11-19 11:50:26，W=3294.5，COP=2.96
+[scheduler] 小柯确认到货偏差已处理或未超过阈值，转reviewer审核
+[scheduler] 到货通过审核，占用库房：A1
+[断言] 未进入 waiting_arrival_replan；日志无“货温偏差”；thermalPlcHistory 增加到货记录（q_resp=1.25，plcSnapshot 非空）。
+
+[场景C] 到货12t、货温5℃（吨位偏差20%）
+[xiaoke] 到货参数记录：原始预约吨位10t、库房A1；q_resp条件温度5℃；实际到货吨位12t、到货货温5℃；吨位偏差20%，阈值5%；温度仅记录不参与偏差判定
+[xiaoke] q_resp条件温度与PLC参数已写入热物性历史：采样时间2026-11-19 11:45:00，W=3000，COP=1.1
+[xiaoke] 到货吨位偏差超过5%，属于贮藏方案需要重新规划，暂停普通审核重试，转master由库内人员选择增加库房或更换库房
+[master] 收到小柯到货偏差上报，等待库内人员选择增加/更换库房
+[断言] arrivalDeviation.deviations 只含 tonnagePct=20，不含 temperaturePct；触发重规划。

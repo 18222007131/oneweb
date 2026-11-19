@@ -1,0 +1,10 @@
+{
+  "accounts": {
+    "111": "external",
+    "11111": "external",
+    "1111122": "external",
+    "admin": "internal",
+    "warehouse01": "internal"
+  },
+  "lastLoggedIn": "111"
+}

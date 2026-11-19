@@ -1,0 +1,12 @@
+[节选] 柚子内置温湿度参数与reviewer payload
+[scheduler] 预选完成：果品柚子，吨位10t；候选1间：B1 温区5~10°C 湿度85% 可用库容300t；送前置reviewer快速核验（第1次）
+[reviewer] 前置快速核验通过：候选1间（B1 温区5~10°C 湿度85% 可用库容300t）
+[master] 前置reviewer核验已通过，向用户展示 1 间可预约库房：B1
+[scheduler] 组装单据 YY-20261119-001 完成，发送reviewer审核（第1次）
+[reviewer] 收到scheduler送审单据：YY-20261119-001
+[reviewer] 单据果品：柚子；单据温湿度要求：5~10°C/85%；内置要求：5~10°C/85%
+[reviewer] 调用DeepSeek做入库单据合规校验
+[reviewer] 审核通过，结果返回scheduler
+[scheduler] 预约通过审核，库房 B1（B区1号冷库）标记为占用
+[断言] 预约单字段：tempZone=5~10°C、humidity=85%、temperatureRequirement=5~10°C、humidityRequirement=85%、fruitSpec.tempText=5~10°C、fruitSpec.humidity=85%。
+[断言] reviewer LLM payload包含 builtInFruitSpecs（杨梅/柚子/苹果）和 documentFruitSpec；严格Mock在缺少内置参数时返回“预约单缺少内置温湿度参数”，本次未触发。
